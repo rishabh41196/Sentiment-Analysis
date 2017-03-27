@@ -3,14 +3,15 @@ import tweepy
 from tweepy import OAuthHandler
 from textblob import TextBlob
 import sys
+from django.conf import settings
  
 class TwitterClient(object):
     '''Twitter class for senti analysis.'''
     def __init__(self):
-        consumer_key = 'u8KVRzIfvR269fMy8O57aodMc'
-        consumer_secret = 'dZP6mK2gmyU2Sx449o6REH7JahcdfkxK433gtSoDpG24JIqAvm'
-        access_token = '585034442-PXCtF9zdqtG5jBN14vrjKfRyQuxyQdSpBhJ0hNKc'
-        access_token_secret = '42j2v75lzQppHIMD4XCIGaQpJghJ9P5JKg1UFjRpdty9F'
+        consumer_key = settings.CONSUMER_KEY
+        consumer_secret = settings.CONSUMER_SECRET
+        access_token = settings.ACCESS_TOKEN
+        access_token_secret = settings.ACCESS_TOKEN_SECRET
  
         try:
             self.auth = OAuthHandler(consumer_key, consumer_secret)

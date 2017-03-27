@@ -1,7 +1,7 @@
 from django.shortcuts import get_object_or_404, redirect, render
+from django.http import HttpResponseRedirect
 from .forms import SearchBox
 from .sentiment import TwitterObject
-from django.http import HttpResponseRedirect
 
 def home(request):
 	form=SearchBox(request.POST or None)
@@ -11,7 +11,7 @@ def home(request):
 	if form.is_valid():
 		request.session['form']=request.POST
 		return HttpResponseRedirect('tweetView')
-	return render(request,'home.html',context)
+	return render(request,'base.html',context)
 
 def tweetView(request):
 	form=SearchBox(request.session.get('form'))
@@ -22,6 +22,8 @@ def tweetView(request):
 	posPer=0
 	negPer=0
 	neutPer=0
+
+
 	context={
 		'posTweet' : posTweet,
 		'negTweet' : negTweet,
@@ -34,7 +36,7 @@ def tweetView(request):
 		obj=TwitterObject()
 		obj.subj=request.session.get('form')['searchBox']
 		if not obj.subj:
-			return render(request,'tweetView',context)
+			return render(request,'tweetView.html',context)
 
 		obj.fetchTweets()
 		ptweets=obj.ptweets 
@@ -47,7 +49,7 @@ def tweetView(request):
 		neutPer=format(100*len(neutral)/total)
 		# Positive
 		for tweet in ptweets[:100]:
-			posTweet.append(tweet['text'])
+			posTweet.append(tweet)
 		# Negative    
 		for tweet in ntweets[:100]:
 			negTweet.append(tweet['text'])
@@ -63,7 +65,7 @@ def tweetView(request):
 		'negPer' : negPer,
 		'neutPer' : neutPer,
 	}
-	return render(request,'tweetView.html',context)
+	return render(request,'positive_marker.html',context)
 
 	# form = get_object_or_404(str, pk=city_id)
 	# deals = Deal.objects.filter(city=city)
