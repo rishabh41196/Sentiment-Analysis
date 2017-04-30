@@ -392,7 +392,7 @@
 			"file": "minor/templates/home.html",
 			"settings":
 			{
-				"buffer_size": 107,
+				"buffer_size": 72,
 				"encoding": "UTF-8",
 				"line_ending": "Unix"
 			}
@@ -492,9 +492,9 @@
 	},
 	"expanded_folders":
 	[
-		"/home/rishabh/Desktop/minor/Project/minor",
-		"/home/rishabh/Desktop/minor/Project/minor/templates",
-		"/home/rishabh/Desktop/minor/Project/static"
+		"/home/yogita/Desktop/Minor/Project/minor",
+		"/home/yogita/Desktop/Minor/Project/minor/sentiment",
+		"/home/yogita/Desktop/Minor/Project/static"
 	],
 	"file_history":
 	[
@@ -854,15 +854,15 @@
 					"semi_transient": false,
 					"settings":
 					{
-						"buffer_size": 107,
+						"buffer_size": 72,
 						"regions":
 						{
 						},
 						"selection":
 						[
 							[
-								107,
-								107
+								0,
+								0
 							]
 						],
 						"settings":
@@ -889,8 +889,8 @@
 						"selection":
 						[
 							[
-								1484,
-								1484
+								877,
+								877
 							]
 						],
 						"settings":
@@ -900,7 +900,7 @@
 							"translate_tabs_to_spaces": true
 						},
 						"translation.x": 0.0,
-						"translation.y": 114.0,
+						"translation.y": 270.0,
 						"zoom_level": 1.0
 					},
 					"stack_index": 0,
@@ -1024,7 +1024,7 @@
 	"show_open_files": false,
 	"show_tabs": true,
 	"side_bar_visible": true,
-	"side_bar_width": 150.0,
+	"side_bar_width": 157.0,
 	"status_bar_visible": true,
 	"template_settings":
 	{

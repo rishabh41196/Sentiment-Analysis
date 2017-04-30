@@ -1,22 +1,35 @@
 import re
+import datetime
 import os
 import tweepy
 from tweepy import OAuthHandler
 from textblob import TextBlob
-import Analysis.combine
 from django.conf import settings
- 
+import sys
+import json
+from Analysis.code import combine,extractDataset
+
+
+
+BASE_DIR=os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+
+
 class TwitterClient(object):
     '''Twitter class for senti analysis.'''
     def __init__(self):
-        consumer_key = settings.CONSUMER_KEY
-        consumer_secret = settings.CONSUMER_SECRET
-        access_token = settings.ACCESS_TOKEN
-        access_token_secret = settings.ACCESS_TOKEN_SECRET
+        CONSUMER_KEY = 'U0xGDJZFfpZamK9awid8Fu5j0'
+        CONSUMER_SECRET = 'GnAAVyQCCZnMClGYNs5dEvuRNxVdn2AvuSrsRrk8hzonL9HwEz'
+        ACCESS_TOKEN = '583456685-GeqhFLNky6XTYYSKuo6SGq3LWzR5uqOtyA2bEbGr'
+        ACCESS_TOKEN_SECRET = 'AzvIobGpbBmuJj3PyTRJP9adTQuVv1OwXu0dmA0854BO5'
+
+        # consumer_key = settings.CONSUMER_KEY
+        # consumer_secret = settings.CONSUMER_SECRET
+        # access_token = settings.ACCESS_TOKEN
+        # access_token_secret = settings.ACCESS_TOKEN_SECRET
  
         try:
-            self.auth = OAuthHandler(consumer_key, consumer_secret)
-            self.auth.set_access_token(access_token, access_token_secret)
+            self.auth = OAuthHandler(CONSUMER_KEY, CONSUMER_SECRET)
+            self.auth.set_access_token(ACCESS_TOKEN, ACCESS_TOKEN_SECRET)
             self.api = tweepy.API(self.auth)
         except:
             print("Error: Authentication failed")
@@ -38,11 +51,15 @@ class TwitterClient(object):
  
         try:
             fetched_tweets = self.api.search(q = query, count = count)
+
             for tweet in fetched_tweets:
+                
                 parsed_tweet = {}
                 non_bmp_map = dict.fromkeys(range(0x10000, sys.maxunicode + 1), 0xfffd)
                 parsed_tweet['text'] = tweet.text.translate(non_bmp_map)
+                parsed_tweet['created_at']=tweet.created_at
                 parsed_tweet['sentiment'] = self.get_tweet_sentiment(tweet.text)
+                
                 if tweet.retweet_count > 0:
                     # if tweet has retweets, ensure that it is appended only once
                     if parsed_tweet not in tweets:
@@ -66,15 +83,28 @@ class TwitterObject(object):
 
     def fetchTweets(self):
         self.tweets = self.api.get_tweets(self.subj, count = 200)
-        p1=os.path.join(settings.BASE_DIR,"sentiment","Analysis","dataset","example_tweets.txt")
-        p2=os.path.join(settings.BASE_DIR,"sentiment","Analysis","dataset","testingTokenised.txt")
-        p3=os.path.join(settings.BASE_DIR,"sentiment","Analysis","ark-tweet-nlp","runTagger.sh")
-        os.system(p3+" "+ p1 + " > " + p2) 
-        
+
+        f=open(os.path.join(BASE_DIR,"sentiment","Analysis","dataset","fetched_tweets.txt"),"w")
+        for tweet in self.tweets:
+            f.write(str(tweet))
+            z=tweet['created_at']
+            print z
+            f.write("\n")
+
+        f.close()
+        extractDataset.extract()
+        os.system(os.path.join(BASE_DIR,"sentiment","Analysis","ark-tweet-nlp","runTagger.sh")
+            + " " 
+            + os.path.join(BASE_DIR,"sentiment","Analysis","dataset","example_tweets.txt")
+            + " > " 
+            + os.path.join(BASE_DIR,"sentiment","Analysis","dataset","testingTokenised.txt")) 
+        combine.combine()
+
         # self.ptweets = [tweet for tweet in self.tweets if tweet['sentiment'] == 'positive']
         # self.ntweets = [tweet for tweet in self.tweets if tweet['sentiment'] == 'negative']
         # self.neutral=[tweet for tweet in self.tweets if tweet['sentiment']=='neutral']
 
 
 obj = TwitterObject()
+obj.subj="epl"
 obj.fetchTweets()

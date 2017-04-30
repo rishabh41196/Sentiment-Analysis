@@ -2,11 +2,20 @@
 """ tweet Id, Tweet tokens, POS tokens, label """
 
 from itertools import izip
+import os
+
+
+BASE_DIR=os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+
 
 def combine():
 	data = []
-	f1 = open(".//dataset//testingDatasetProcessed.txt", 'r')
-	f2 = open(".//dataset//testingTokenised.txt", 'r')
+	print BASE_DIR
+	path=os.path.join(BASE_DIR,"dataset","testingDatasetProcessed.txt")
+	f1 = open(path, 'r')
+
+	path=os.path.join(BASE_DIR,"dataset","testingTokenised.txt")
+	f2 = open(path, 'r')
 	for line1, line2 in izip(f1,f2):
 		words1 = line1.strip().split('\t')
 		words2 = line2.strip().split('\t')
@@ -14,8 +23,8 @@ def combine():
 		data.append(string)
 	f1.close()
 	f2.close()
-
-	f = open(".//finalTestingInput", 'w')
+	path=os.path.join(BASE_DIR,"dataset","finalTestingInput.txt")
+	f = open(path, 'w')
 	f.write("".join(data))
 	f.close()
 		
