@@ -1,29 +1,3 @@
-<h4>Positive Tweet Percentage : {{posPer}} </h4>
-<h4>Negative Tweet Percentage : {{negPer}} </h4>
-<h4>Neutral Tweet Percentage : {{neutPer}} </h4>
-<br>
-<br>
-<br>
-
-<h4>Positive Tweets</h4>
-
-{% for tweets in posTweet %}
-        <h6>{{ tweets }}</h6>
-{% endfor %}
-
-
-<h4>Negative Tweets</h4>
-
-{% for tweets in negTweet %}
-        <h6>{{ tweets }}</h6>
-{% endfor %}
-
-<h4>Neutral Tweets</h4>
-
-{% for tweets in neutTweet %}
-        <h6>{{ tweets }}</h6>
-{% endfor %}
-
-<br>
-<br>
-
+{% for iter in data %}
+{{iter.sentiment'}}<br>
+{%endfor%}

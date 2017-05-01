@@ -1,9 +1,6 @@
 import requests
 import json
 import os
-# import pandas as pd
-from queue import Queue
-from threading import Thread
 from time import time
 
 
@@ -29,5 +26,5 @@ class Geocoding:
 					resultdict['state']=l['long_name']
 		return resultdict
 
-geo = Geocoding()
-print geo.getLongLat("")
+# geo = Geocoding()
+# print geo.getLongLat("")

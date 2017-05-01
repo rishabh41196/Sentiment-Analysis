@@ -100,13 +100,10 @@ class TwitterClient(object):
 			# print error (if any)
 			print("Error : " + str(e))
 class TwitterObject(object):
-	def __init__(self):
+	def __init__(self,subj):
 		self.api=TwitterClient()
-		self.subj='';
-		self.ptweets=[]
+		self.subj=subj;
 		self.tweets=[]
-		self.ntweets=[]
-		self.neutral=[]
 
 	def fetchTweets(self):
 		self.tweets = self.api.get_tweets(self.subj, count = 200)
@@ -125,12 +122,8 @@ class TwitterObject(object):
 			+ " > " 
 			+ os.path.join(BASE_DIR,"sentiment","Analysis","dataset","testingTokenised.txt")) 
 		combine.combine()
-
+		return self.tweets
 		# self.ptweets = [tweet for tweet in self.tweets if tweet['sentiment'] == 'positive']
 		# self.ntweets = [tweet for tweet in self.tweets if tweet['sentiment'] == 'negative']
 		# self.neutral=[tweet for tweet in self.tweets if tweet['sentiment']=='neutral']
 
-
-obj = TwitterObject()
-obj.subj="epl"
-obj.fetchTweets()

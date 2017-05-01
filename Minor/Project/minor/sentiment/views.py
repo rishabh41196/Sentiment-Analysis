@@ -1,8 +1,9 @@
 from django.shortcuts import get_object_or_404, redirect, render
 from django.http import HttpResponseRedirect
 from .forms import SearchBox
-from .sentiment import TwitterObject
-
+from .models import TweetModel
+from .fetch import TwitterObject
+from datetime import datetime
 def home(request):
 	form=SearchBox(request.POST or None)
 	context = {
@@ -15,56 +16,50 @@ def home(request):
 
 def tweetView(request):
 	form=SearchBox(request.session.get('form'))
-	obj=TwitterObject()
-	posTweet=[]
-	negTweet=[]
-	neutTweet=[]
-	posPer=0
-	negPer=0
-	neutPer=0
-
-
-	context={
-		'posTweet' : posTweet,
-		'negTweet' : negTweet,
-		'neutTweet' : neutTweet,
-		'posPer' : posPer,	
-		'negPer' : negPer,
-		'neutPer' : neutPer,
+	final=[]
+	context = {
+		'data' : final
 	}
+
 	if form.is_valid():
-		obj=TwitterObject()
-		obj.subj=request.session.get('form')['searchBox']
-		if not obj.subj:
+		subj=request.session.get('form')['searchBox']		
+		if not subj:
 			return render(request,'tweetView.html',context)
 
-		obj.fetchTweets()
-		ptweets=obj.ptweets 
-		ntweets=obj.ntweets
-		neutral=obj.neutral
+		obj=TwitterObject(subj)
+		tweets = obj.fetchTweets()
+		
+		dbTweets = TweetModel.objects.all().filter(topic = subj)
 
-		total=len(ptweets)+len(ntweets)+len(neutral)
-		posPer=format(100*len(ptweets)/total)
-		negPer=format(100*len(ntweets)/total)
-		neutPer=format(100*len(neutral)/total)
-		# Positive
-		for tweet in ptweets[:100]:
-			posTweet.append(tweet)
-		# Negative    
-		for tweet in ntweets[:100]:
-			negTweet.append(tweet['text'])
-		# Neutral
-		for tweet in neutral[:100]:
-			neutTweet.append(tweet['text'])
-			
-	context={
-		'posTweet' : posTweet,
-		'negTweet' : negTweet,
-		'neutTweet' : neutTweet,
-		'posPer' : posPer,	
-		'negPer' : negPer,
-		'neutPer' : neutPer,
+
+		for tweet in dbTweets :
+			sentData = {}
+			sentData['lat'] = tweet.lat
+			sentData['lon'] = tweet.lon
+			sentData['sentiment'] = tweet.sentiment
+			final.append(dbTweets)
+				 
+
+		for tweet in tweets:
+			entity = TweetModel(tweetId = tweet['id'], 
+				topic = subj , 
+				text = tweet['text'] ,
+				date = tweet['created_at'],
+				lat =  tweet['lat'],
+				lon = tweet['long'],
+				sentiment = tweet['sentiment'])
+			if entity not in dbTweets:
+				sentData = {}
+				sentData['lat'] = entity.lat
+				sentData['lon'] = entity.lon
+				sentData['sentiment'] = entity.sentiment
+				final.append(dbTweets)
+				entity.save()
+
+	context = {
+		'data' : final
 	}
+	
 	return render(request,'tweetView.html',context)
 
 	# form = get_object_or_404(str, pk=city_id)
