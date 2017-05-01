@@ -8,7 +8,7 @@ from django.conf import settings
 import sys
 import json
 from Analysis.code import combine,extractDataset
-
+from .get_coordinates import Geocoding
 
 
 BASE_DIR=os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
@@ -21,6 +21,8 @@ class TwitterClient(object):
         CONSUMER_SECRET = 'GnAAVyQCCZnMClGYNs5dEvuRNxVdn2AvuSrsRrk8hzonL9HwEz'
         ACCESS_TOKEN = '583456685-GeqhFLNky6XTYYSKuo6SGq3LWzR5uqOtyA2bEbGr'
         ACCESS_TOKEN_SECRET = 'AzvIobGpbBmuJj3PyTRJP9adTQuVv1OwXu0dmA0854BO5'
+    
+        self.geo=Geocoding()
 
         # consumer_key = settings.CONSUMER_KEY
         # consumer_secret = settings.CONSUMER_SECRET
@@ -51,7 +53,7 @@ class TwitterClient(object):
  
         try:
             fetched_tweets = self.api.search(q = query, count = count)
-
+            #print fetched_tweets
             for tweet in fetched_tweets:
                 
                 parsed_tweet = {}
@@ -59,7 +61,11 @@ class TwitterClient(object):
                 parsed_tweet['text'] = tweet.text.translate(non_bmp_map)
                 parsed_tweet['created_at']=tweet.created_at
                 parsed_tweet['sentiment'] = self.get_tweet_sentiment(tweet.text)
-                
+                parsed_tweet['id'] = tweet.id
+                parsed_tweet['location'] = tweet.user.location
+        
+          #       parsed_tweet['latitude'] = get_coordinates(parsed_tweet['location'])           
+
                 if tweet.retweet_count > 0:
                     # if tweet has retweets, ensure that it is appended only once
                     if parsed_tweet not in tweets:
@@ -86,11 +92,10 @@ class TwitterObject(object):
 
         f=open(os.path.join(BASE_DIR,"sentiment","Analysis","dataset","fetched_tweets.txt"),"w")
         for tweet in self.tweets:
-            f.write(str(tweet))
             z=tweet['created_at']
-            print z
+            # print z.datetime
+            f.write(str(tweet))
             f.write("\n")
-
         f.close()
         extractDataset.extract()
         os.system(os.path.join(BASE_DIR,"sentiment","Analysis","ark-tweet-nlp","runTagger.sh")
