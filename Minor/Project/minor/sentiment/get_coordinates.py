@@ -30,4 +30,4 @@ class Geocoding:
 		return resultdict
 
 geo = Geocoding()
-print geo.getLongLat("smofc")
+print geo.getLongLat("")
