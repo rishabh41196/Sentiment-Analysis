@@ -10,57 +10,71 @@ def home(request):
 		'form': form,
 	}
 	if form.is_valid():
-		request.session['form']=request.POST
+		request.session['date'] = str(datetime.now().date())
+		request.session['form'] = request.POST
 		return HttpResponseRedirect('tweetView')
 	return render(request,'base.html',context)
 
 def tweetView(request):
 	form=SearchBox(request.session.get('form'))
+	print request.session
+	# searched_date=SearchBox(request.session.get('date'))
+	lat=[]
+	lon = []
 	final=[]
+	sentiment = []
 	context = {
-		'data' : final
+		'lat' : lat,
+		'lon' : lon,
+		'sentiment' : sentiment,
 	}
+	# print searched_date
 
-	if form.is_valid():
-		subj=request.session.get('form')['searchBox']		
-		if not subj:
-			return render(request,'tweetView.html',context)
+	# if form.is_valid():
+	# 	subj=request.session.get('form')['searchBox']		
+	# 	if not subj:
+	# 		return render(request,'tweetView.html',context)
 
-		obj=TwitterObject(subj)
-		tweets = obj.fetchTweets()
+	# 	obj=TwitterObject(subj)
+	# 	tweets = obj.fetchTweets()
 		
-		dbTweets = TweetModel.objects.all().filter(topic = subj)
+	# 	dbTweets = TweetModel.objects.all().filter(topic = subj, date=str(searched_date))
+	# 	tweetId = []
+		
+	# 	for tweet in dbTweets :
+	# 		sentData = {}
 
+	# 		lat.append(str(tweet.lat))
+	# 		lon.append(str(tweet.lon))
+	# 		sentiment.append(tweet.sentiment)
+	# 		sentData['lat'] = str(tweet.lat)
+	# 		sentData['lon'] = str(tweet.lon)
+	# 		sentData['sentiment'] = tweet.sentiment
+	# 		final.append(dbTweets)
+	
+	# 	for tweet in tweets:
+	# 		entity = TweetModel(tweetId = tweet.get('id'), 
+	# 			topic = subj , 
+	# 			text = tweet.get('text') ,
+	# 			date = tweet.get('created_at').now().date(),
+	# 			lat =  tweet.get('lat'),
+	# 			lon = tweet.get('long'),
+	# 			sentiment = tweet.get('sentiment'))
+	# 		if entity.tweetId not in tweetId:
+	# 			lat.append(str(entity.lat))
+	# 			lon.append(str(entity.lon))
+	# 			sentiment.append(entity.sentiment)
+	# 			tweetId.append(entity.tweetId)
+	# 			entity.save()	
 
-		for tweet in dbTweets :
-			sentData = {}
-			sentData['lat'] = tweet.lat
-			sentData['lon'] = tweet.lon
-			sentData['sentiment'] = tweet.sentiment
-			final.append(dbTweets)
-				 
-
-		for tweet in tweets:
-			entity = TweetModel(tweetId = tweet['id'], 
-				topic = subj , 
-				text = tweet['text'] ,
-				date = tweet['created_at'],
-				lat =  tweet['lat'],
-				lon = tweet['long'],
-				sentiment = tweet['sentiment'])
-			if entity not in dbTweets:
-				sentData = {}
-				sentData['lat'] = entity.lat
-				sentData['lon'] = entity.lon
-				sentData['sentiment'] = entity.sentiment
-				final.append(dbTweets)
-				entity.save()
-
-	context = {
-		'data' : final
-	}
+	# print lat
+	# print lon
+	# print sentiment
+	# context = {
+	# 	'data' : final,
+	# 	'lat' : lat,
+	# 	'lon' : lon,
+	# 	'sentiment' : sentiment,
+	# }
 	
 	return render(request,'tweetView.html',context)
-
-	# form = get_object_or_404(str, pk=city_id)
-	# deals = Deal.objects.filter(city=city)
