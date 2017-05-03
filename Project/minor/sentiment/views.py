@@ -58,6 +58,7 @@ def tweetView(request):
 			final.append(sentData)
 	
 		for tweet in tweets:
+			# print tweet.get('location')
 			entity = TweetModel(tweetId = tweet.get('id'), 
 				topic = subj , 
 				text = tweet.get('text') ,
@@ -80,10 +81,16 @@ def tweetView(request):
 				tweetId.append(entity.tweetId)
 				entity.save()	
 		f = open(os.path.join(settings.BASE_DIR,"templates","data.json"),"w")
+		f.write('var data = { "locations" : [')
+		ct=0
+		l= len(final)
 		for data in final:
 			json.dump(data,f)
-			f.write("\n")
+			if ct <= l-2:
+				f.write(",\n")
+			ct+=1
 			# print r
+		f.write("]}")
 		f.close()
 		print len(lat)
 	context = {

@@ -65,24 +65,25 @@ class TwitterClient(object):
 				parsed_tweet['sentiment'] = self.get_tweet_sentiment(tweet.text)
 				parsed_tweet['id'] = tweet.id
 				parsed_tweet['user_id']=tweet.user.id
-				loc = tweet.user.location
+				parsed_tweet['location'] = tweet.user.location
 				#if parsed_tweet['location'] == None:
 				#    print "cjxdic"
 				#    parsed_tweet['location'] = "Antarctica"
 				loc_list = []
-				loc_list = loc.split('.')
+				loc_list = parsed_tweet['location'].split('.')
 				f=0
-		  #      parsed_tweet['latitude'] = get_coordinates(parsed_tweet['location'])           
 				result_loc={}
 				for i in loc_list:
 					result_loc={}
 					result_loc=self.geo.getLongLat(i)
 					if 'lat'in result_loc.keys() and 'long' in result_loc.keys():
 						f=1
+						parsed_tweet['location']=i
 						break
 
 				if f==0:
 					result_loc={}
+					parsed_tweet['location']="antarctica"
 					result_loc=self.geo.getLongLat("antarctica")
 				
 				parsed_tweet['lat']=result_loc['lat']
