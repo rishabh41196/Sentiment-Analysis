@@ -41,7 +41,7 @@
 	  }
 	</style>
 
-	<script src="{% static '/js/canvasjs.js' %}"></script>
+	<script src="{% static 'js/canvasjs.min.js' %}"></script>
 	<script type="text/javascript">
 		window.onload = function () {
 			var chart = new CanvasJS.Chart("chartContainer", {
@@ -51,9 +51,9 @@
 				data: [{
 					type: "column",
 					dataPoints: [
-						{ y: 45, label: "Positive" },
-						{ y: 31, label: "Negative" },
-						{ y: 52, label: "Neutral" },
+						{ y: parseInt("{{pos}}"), label: "Positive" },
+						{ y: parseInt("{{neg}}"), label: "Negative" },
+						{ y: parseInt("{{neut}}"), label: "Neutral" },
 						
 					]
 				}]
@@ -62,30 +62,30 @@
 		}
 	</script>
 
- <script language="JavaScript" src="{% static '/js/ts_picker.js' %}">
+ <script language="JavaScript" src="{% static 'js/ts_picker.js' %}">
 
 </script>
 
 	<script src="http://maps.googleapis.com/maps/api/js?v=3&amp;sensor=false"></script>
-	<!-- <script src="data.json"></script> -->
-	<script type="text/javascript" src="{% static '/js/markerclusterer.js' %}"></script>
+	<!-- <script src="{% static 'json/data.json' %}"></script> -->
+	<script type="text/javascript" src="{% static 'js/markerclusterer.js' %}"></script>
 	<script>
 	  var styles = [[{
-		url: "{% static '/img/people35.png' %}",
+		url: "{% static 'img/people35.png' %}",
 		height: 35,
 		width: 35,
 		anchor: [16, 0],
 		textColor: '#ff00ff',
 		textSize: 10
 	  }, {
-		url: "{% static '/img/people45.png' %}",
+		url: "{% static 'img/people45.png' %}",
 		height: 45,
 		width: 45,
 		anchor: [24, 0],
 		textColor: '#ff0000',
 		textSize: 11
 	  }, {
-		url: "{% static '/img/people55.png' %}",
+		url: "{% static 'img/people55.png' %}",
 		height: 55,
 		width: 55,
 		anchor: [32, 0],
@@ -169,15 +169,15 @@
 		  var markerImage = new google.maps.MarkerImage(imageUrl,
 			new google.maps.Size(24, 32));
 
-		  var lon="{{lon}}";
-		  var lat="{{lat}}";
-		  var sentiment="{{Sentiment}}";
+		  var lon="{{lon|safe}}";
+		  var lat="{{lat|safe}}";
+		  //var sentiment="{{sentiment|safe}}";
 		  var len = "{{len}}";
-		  // var data = JSON.parse(data);
-		 //  for(i=0;i<data.length;i++) {
-			// var latLng = new google.maps.LatLng(data[i].latitude,
-			// 	data[i].longitude)
-		window.alert(len)
+
+		  //sentiment = JSON.parse(sentiment);
+		  lon = JSON.parse(lon);
+		  lat = JSON.parse(lat);
+		  
 		  for(i=0;i<len;i++) {
 			var latLng = new google.maps.LatLng(lat[i],
 				lon[i]);

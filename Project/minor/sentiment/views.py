@@ -23,17 +23,22 @@ def tweetView(request):
 	searched_date=request.session.get('date')
 	lat=[]
 	lon = []
+	lis=[]
 	final=[]
 	sentiment = []
 	subj=request.session.get('form')['searchBox']		
 		
 	context = {
 		'subj' : subj,
+		'pos': 0,
+		'neg' : 0,
+		'neut': 0,
 		'date' : searched_date,
 		'lat' : lat,
 		'lon' : lon,
 		'sentiment' : sentiment,
-		'len' : 0
+		'len' : 0,
+		'lis' : lis
 	}
 	
 	if form.is_valid():
@@ -45,12 +50,10 @@ def tweetView(request):
 		
 		dbTweets = TweetModel.objects.all().filter(topic = subj, date=str(searched_date))
 		tweetId = []
-		
 		for tweet in dbTweets :
 			sentData = {}
-
-			lat.append(tweet.lat)
-			lon.append(tweet.lon)
+			lat.append(float(tweet.lat))
+			lon.append(float(tweet.lon))
 			sentiment.append(tweet.sentiment)
 			sentData['latitude'] = tweet.lat
 			sentData['longitude'] = tweet.lon
@@ -67,39 +70,40 @@ def tweetView(request):
 				lon = tweet.get('long'),
 				sentiment = tweet.get('sentiment'))
 			if entity.tweetId not in tweetId:
-
 				sentData={}
 				sentData['latitude'] = entity.lat
 				sentData['longitude'] = entity.lon
 				sentData['sentiment'] = entity.sentiment
-				
+				lat.append(float(entity.lat))
+				lon.append(float(entity.lon))
+				sentiment.append(entity.sentiment)			
 				final.append(sentData)
-		
-				lat.append(entity.lat)
-				lon.append(entity.lon)
-				sentiment.append(entity.sentiment)
 				tweetId.append(entity.tweetId)
 				entity.save()	
-		f = open(os.path.join(settings.BASE_DIR,"templates","data.json"),"w")
-		f.write('var data = { "locations" : [')
+		f = open(os.path.join(settings.STATIC_ROOT,"json","data.json"),"w")
+		f.write('{"locations" : [')
 		ct=0
 		l= len(final)
-		for data in final:
-			json.dump(data,f)
-			if ct <= l-2:
-				f.write(",\n")
-			ct+=1
-			# print r
-		f.write("]}")
-		f.close()
-		print len(lat)
+
+		pos=0
+		neg=0
+		neut=0
+
+		sentiment = json.dumps(sentiment)
+		lon=json.dumps(lon)
+		lat=json.dumps(lat)
+
 	context = {
 		'subj' : subj,
+		'pos': pos,
+		'neg' : neg,
+		'neut': neut,
 		'date' : searched_date,
 		'lat' : lat,
 		'lon' : lon,
 		'sentiment' : sentiment,
-		'len' : len(lat)
+		'len' : len(lat),
+		'lis' : lis
 	}
-	
+
 	return render(request,'ad3.html',context)
