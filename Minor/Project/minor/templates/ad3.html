@@ -41,7 +41,7 @@
 	  }
 	</style>
 
-	<script src="canvasjs.min.js"></script>
+	<script src="{% static '/js/canvasjs.js' %}"></script>
 	<script type="text/javascript">
 		window.onload = function () {
 			var chart = new CanvasJS.Chart("chartContainer", {
@@ -62,13 +62,13 @@
 		}
 	</script>
 
- <script language="JavaScript" src="ts_picker.js">
+ <script language="JavaScript" src="{% static '/js/ts_picker.js' %}">
 
 </script>
 
 	<script src="http://maps.googleapis.com/maps/api/js?v=3&amp;sensor=false"></script>
 	<script src="data.json"></script>
-	<script type="text/javascript" src="../src/markerclusterer.js"></script>
+	<script type="text/javascript" src="{% static '/js/markerclusterer.js' %}"></script>
 	<script>
 	  var styles = [[{
 		url: "{% static '/img/people35.png' %}",
@@ -290,7 +290,7 @@
  </style>
  		<form name="tstest" class="topcorner" method="post">Date:
 <input  type="Text" name="timestamp" value="">
-<a href="javascript:show_calendar('document.tstest.timestamp', document.tstest.timestamp.value);"><img src="cal.gif" width="16" height="16" border="0" alt="Click Here to Pick up the timestamp"></a>
+<a href="javascript:show_calendar('document.tstest.timestamp', document.tstest.timestamp.value);"><img src="{% static 'img/cal.gif' %}" width="16" height="16" border="0" alt="Click Here to Pick up the timestamp"></a>
 </form>
   		<div id="chartContainer" class="topc" style="height: 300px; width: 30%;"></div>
 

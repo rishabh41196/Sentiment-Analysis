@@ -1,10 +1,12 @@
 from django.shortcuts import get_object_or_404, redirect, render
 from django.http import HttpResponseRedirect
+from django.conf import settings
 from .forms import SearchBox
 from .models import TweetModel
 from .fetch import TwitterObject
 from datetime import datetime
 import json
+import os
 def home(request):
 	form=SearchBox(request.POST or None)
 	context = {
@@ -73,7 +75,7 @@ def tweetView(request):
 				sentiment.append(entity.sentiment)
 				tweetId.append(entity.tweetId)
 				entity.save()	
-		f = open("data.json","w")
+		f = open(os.path.join(settings.BASE_DIR,"templates","data.json"),"w")
 		for data in final:
 			json.dump(data,f)
 			f.write("\n")
@@ -84,4 +86,4 @@ def tweetView(request):
 		'date' : searched_date
 	}
 	
-	return render(request,'tweetView.html',context)
+	return render(request,'ad3.html',context)
