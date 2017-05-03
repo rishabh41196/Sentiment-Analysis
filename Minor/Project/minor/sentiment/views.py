@@ -4,6 +4,7 @@ from .forms import SearchBox
 from .models import TweetModel
 from .fetch import TwitterObject
 from datetime import datetime
+import json
 def home(request):
 	form=SearchBox(request.POST or None)
 	context = {
@@ -22,15 +23,14 @@ def tweetView(request):
 	lon = []
 	final=[]
 	sentiment = []
+	subj=request.session.get('form')['searchBox']		
+		
 	context = {
-		'lat' : lat,
-		'lon' : lon,
-		'sentiment' : sentiment,
+		'subj' : subj,
+		'date' : searched_date
 	}
-	print searched_date
-
+	
 	if form.is_valid():
-		subj=request.session.get('form')['searchBox']		
 		if not subj:
 			return render(request,'tweetView.html',context)
 
@@ -43,13 +43,13 @@ def tweetView(request):
 		for tweet in dbTweets :
 			sentData = {}
 
-			lat.append(str(tweet.lat))
-			lon.append(str(tweet.lon))
+			lat.append(tweet.lat)
+			lon.append(tweet.lon)
 			sentiment.append(tweet.sentiment)
-			sentData['lat'] = str(tweet.lat)
-			sentData['lon'] = str(tweet.lon)
+			sentData['latitude'] = tweet.lat
+			sentData['longitude'] = tweet.lon
 			sentData['sentiment'] = tweet.sentiment
-			final.append(dbTweets)
+			final.append(sentData)
 	
 		for tweet in tweets:
 			entity = TweetModel(tweetId = tweet.get('id'), 
@@ -60,20 +60,28 @@ def tweetView(request):
 				lon = tweet.get('long'),
 				sentiment = tweet.get('sentiment'))
 			if entity.tweetId not in tweetId:
-				lat.append(str(entity.lat))
-				lon.append(str(entity.lon))
+
+				sentData={}
+				sentData['latitude'] = entity.lat
+				sentData['longitude'] = entity.lon
+				sentData['sentiment'] = entity.sentiment
+				
+				final.append(sentData)
+		
+				lat.append(entity.lat)
+				lon.append(entity.lon)
 				sentiment.append(entity.sentiment)
 				tweetId.append(entity.tweetId)
 				entity.save()	
-
-	print lat
-	print lon
-	print sentiment
+		f = open("data.json","w")
+		for data in final:
+			json.dump(data,f)
+			f.write("\n")
+			# print r
+		f.close()
 	context = {
-		'data' : final,
-		'lat' : lat,
-		'lon' : lon,
-		'sentiment' : sentiment,
+		'subj' : subj,
+		'date' : searched_date
 	}
 	
 	return render(request,'tweetView.html',context)

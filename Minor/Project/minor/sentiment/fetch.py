@@ -82,7 +82,6 @@ class TwitterClient(object):
 						break
 
 				if f==0:
-					parsed_tweet['location'] = "antarctica"
 					result_loc={}
 					result_loc=self.geo.getLongLat("antarctica")
 				
@@ -110,7 +109,7 @@ class TwitterObject(object):
 		self.tweets=[]
 
 	def fetchTweets(self):
-		self.tweets = self.api.get_tweets(self.subj, count = 20)
+		self.tweets = self.api.get_tweets(self.subj, count = 2)
 		self.tweets = self.api.get_tweets(self.subj, count = 5)
 		f=open(os.path.join(BASE_DIR,"sentiment","Analysis","dataset","Testing.txt"),"w")
 		for tweet in self.tweets:
@@ -136,13 +135,13 @@ class TwitterObject(object):
 			+ " > " 
 			+ os.path.join(BASE_DIR,"sentiment","Analysis","dataset","testingTokenised.txt")) 
 		combine.combine()
-		sentiment.classify()
+		# sentiment.classify()
 
-		f=open(os.path.join(BASE_DIR,"sentiment","Analysis","code","taskB.pred"),"r")
+		# f=open(os.path.join(BASE_DIR,"sentiment","Analysis","code","taskB.pred"),"r")
 		
-		i=0
-		for sent in f:
-			self.tweets[i]['sentiment']=str(sent)
-			i+=1
+		# i=0
+		# for sent in f:
+		# 	self.tweets[i]['sentiment']=str(sent)
+		# 	i+=1
 
 		return self.tweets
