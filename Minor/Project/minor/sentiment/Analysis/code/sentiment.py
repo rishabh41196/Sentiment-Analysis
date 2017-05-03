@@ -9,10 +9,13 @@ from svmutil import *
 #from sklearn import naive_bayes
 #from sklearn.externals import joblib
 
+
+BASE_DIR=os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 def classify():    
 
     """create emoticons dictionary"""
-    f=open(".//code//emoticonsWithPolarity.txt",'r')
+    f=open(os.path.join(BASE_DIR,'code','emoticonsWithPolarity.txt'),'r')
+    
     data=f.read().split('\n')
     emoticonsDict={}
     for i in data:
@@ -27,7 +30,7 @@ def classify():
     #print emoticonsDict
 
     """create acronym dictionary"""
-    f=open(".//code//acronym_tokenised.txt",'r')
+    f=open(os.path.join(BASE_DIR,'code','acronym_tokenised.txt'),'r')
     data=f.read().split('\n')
     acronymDict={}
     for i in data:
@@ -44,7 +47,8 @@ def classify():
 
     """create stopWords dictionary"""
     stopWords=defaultdict(int)
-    f=open(".//code//stopWords.txt", "r")
+
+    f=open(os.path.join(BASE_DIR,'code','stopWords.txt'),'r')
     for line in f:
         if line:
             line=line.strip(specialChar).lower()
@@ -53,12 +57,13 @@ def classify():
     
     #acronymDict,stopWords,emoticonsDict = loadDictionary()
 
-    priorScore=dict(map(lambda (k,v): (frozenset(reduce( lambda x,y:x+y,[[i] if i not in acronymDict else acronymDict[i][0] for i in k.split()])),int(v)),[ line.split('\t') for line in open(".//code//AFINN-111.txt") ]))
+    priorScore=dict(map(lambda (k,v): (frozenset(reduce( lambda x,y:x+y,[[i] if i not in acronymDict else acronymDict[i][0] for i in k.split()])),int(v)),[ line.split('\t') for line in open(os.path.join(BASE_DIR,'code','AFINN-111.txt')) ]))
     
     """create Unigram Model"""
     print "Creating Unigram Model......."
     uniModel=[]
-    f=open('.//code//unigram.txt','r')
+
+    f=open(os.path.join(BASE_DIR,'code','unigram.txt'),'r')  
     for line in f:
         if line:
             line=line.strip('\r\t\n ')
@@ -69,7 +74,10 @@ def classify():
 
     print "Creating Bigram Model......."
     biModel=[]
-    f=open('.//code//bigram.txt','r')
+    
+    f=open(os.path.join(BASE_DIR,'code','bigram.txt'),'r')  
+    
+    
     for line in f:
         if line:
             line=line.strip('\r\t\n ')
@@ -79,7 +87,8 @@ def classify():
 
     print "Creating Trigram Model......."
     triModel=[]
-    f=open('.//code//trigram.txt','r')
+    f=open(os.path.join(BASE_DIR,'code','trigram.txt'),'r')  
+    
     for line in f:
         if line:
             line=line.strip('\r\t\n ')
@@ -106,7 +115,9 @@ def classify():
 
     encode={'positive': 1.0,'negative': 2.0,'neutral':3.0}
     trainingLabel=[]
-    f=open(".//dataset//finalTrainingInput.txt",'r')
+    
+    f=open(os.path.join(BASE_DIR,'dataset','finalTrainingInput.txt'),'r')  
+    
     featureVectorsTrain=[]
     for i in f:
         if i:
@@ -157,7 +168,8 @@ def classify():
     testingLabel=[]
     #data=[]
     data1=[]
-    f=open(".//dataset//finalTestingInput.txt",'r')
+    f=open(os.path.join(BASE_DIR,'dataset','finalTestingInput.txt'),'r')  
+
     featureVectorsTest=[]
     for i in f:
         if i:
@@ -214,8 +226,9 @@ def classify():
     #f=open('./code/taskB.gs','w')
     #f.write('\n'.join(data))
     #f.close()
-
-    f=open('./code/taskB.pred','w')
+    f=open(os.path.join(BASE_DIR,'code','taskB.pred'),'w')  
+    
+    
     f.write('\n'.join(data1))
     f.close()
     

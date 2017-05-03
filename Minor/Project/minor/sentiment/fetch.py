@@ -7,8 +7,9 @@ from textblob import TextBlob
 from django.conf import settings
 import sys
 import json
-from Analysis.code import combine,extractDataset
+from Analysis.code import combine,extractDataset,sentiment
 import get_coordinates
+import codecs
 
 
 BASE_DIR=os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
@@ -48,8 +49,9 @@ class TwitterClient(object):
 		else:
 			return 'negative'
  
-	def get_tweets(self, query, count = 50):
+	def get_tweets(self, query, count = 5):
 		tweets = []
+		#testing_tweets = []
  
 		try:
 			fetched_tweets = self.api.search(q = query, count = count)
@@ -62,12 +64,13 @@ class TwitterClient(object):
 				parsed_tweet['created_at']=tweet.created_at
 				parsed_tweet['sentiment'] = self.get_tweet_sentiment(tweet.text)
 				parsed_tweet['id'] = tweet.id
-				parsed_tweet['location'] = tweet.user.location
+				parsed_tweet['user_id']=tweet.user.id
+				loc = tweet.user.location
 				#if parsed_tweet['location'] == None:
 				#    print "cjxdic"
 				#    parsed_tweet['location'] = "Antarctica"
 				loc_list = []
-				loc_list = parsed_tweet['location'].split('.')
+				loc_list = loc.split('.')
 				f=0
 		  #      parsed_tweet['latitude'] = get_coordinates(parsed_tweet['location'])           
 				result_loc={}
@@ -75,12 +78,10 @@ class TwitterClient(object):
 					result_loc={}
 					result_loc=self.geo.getLongLat(i)
 					if 'lat'in result_loc.keys() and 'long' in result_loc.keys():
-						parsed_tweet['location'] = i
 						f=1
 						break
 
 				if f==0:
-					parsed_tweet['location'] = "Antartica"
 					result_loc={}
 					result_loc=self.geo.getLongLat("Antartica")
 
@@ -106,24 +107,55 @@ class TwitterObject(object):
 		self.tweets=[]
 
 	def fetchTweets(self):
-		self.tweets = self.api.get_tweets(self.subj, count = 200)
+		self.tweets = self.api.get_tweets(self.subj, count = 20)
 
-		f=open(os.path.join(BASE_DIR,"sentiment","Analysis","dataset","fetched_tweets.txt"),"w")
+		# f=open(os.path.join(BASE_DIR,"sentiment","Analysis","dataset","fetched_tweets.txt"),"w")
+		# for tweet in self.tweets:
+		# 	z=tweet['created_at']
+		# 	f.write(str(tweet))
+		# 	f.write("\n")
+		# f.close()
+
+		f=open(os.path.join(BASE_DIR,"sentiment","Analysis","dataset","Testing.txt"),"w")
 		for tweet in self.tweets:
-			z=tweet['created_at']
-			# print z.datetime
-			f.write(str(tweet))
+			dataset_tweet={}
+			dataset_tweet['id']=tweet['id']
+			dataset_tweet['user_id']=tweet['user_id']
+			dataset_tweet['sentiment']=tweet['sentiment']
+			dataset_tweet['text']=tweet['text']
+			#print dataset_tweet.values[0]
+			#z=tweet['created_at']
+			# # print z.datetime
+			#print dataset_tweet['id']
+			f.write(str(dataset_tweet['id'])+"\t")
+			f.write(str(dataset_tweet['user_id'])+"\t")
+			f.write(str(dataset_tweet['sentiment'])+"\t")
+			f.write(self.api.clean_tweet(dataset_tweet['text']))
 			f.write("\n")
 		f.close()
+		
+
+
 		extractDataset.extract()
+		
 		os.system(os.path.join(BASE_DIR,"sentiment","Analysis","ark-tweet-nlp","runTagger.sh")
 			+ " " 
 			+ os.path.join(BASE_DIR,"sentiment","Analysis","dataset","example_tweets.txt")
 			+ " > " 
 			+ os.path.join(BASE_DIR,"sentiment","Analysis","dataset","testingTokenised.txt")) 
 		combine.combine()
+		sentiment.classify()
+
+		f=open(os.path.join(BASE_DIR,"sentiment","Analysis","code","taskB.pred"),"r")
+		
+		i=0
+		for sent in f:
+			self.tweets[i]['sentiment']=str(sent)
+			i+=1
+
 		return self.tweets
 		# self.ptweets = [tweet for tweet in self.tweets if tweet['sentiment'] == 'positive']
 		# self.ntweets = [tweet for tweet in self.tweets if tweet['sentiment'] == 'negative']
 		# self.neutral=[tweet for tweet in self.tweets if tweet['sentiment']=='neutral']
-
+# obj=TwitterObject("ipl")
+# obj.fetchTweets()

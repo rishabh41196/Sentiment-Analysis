@@ -4,6 +4,50 @@
 		"selected_items":
 		[
 			[
+				"twi",
+				"TwitterObject"
+			],
+			[
+				"twee",
+				"tweet"
+			],
+			[
+				"twe",
+				"tweet"
+			],
+			[
+				"data",
+				"dataset_tweet"
+			],
+			[
+				"re",
+				"result_loc"
+			],
+			[
+				"loc",
+				"loc_list"
+			],
+			[
+				"res",
+				"resultdict"
+			],
+			[
+				"get",
+				"getLongLat"
+			],
+			[
+				"start",
+				"startThreads"
+			],
+			[
+				"ge",
+				"get_coordinates"
+			],
+			[
+				"pa",
+				"parsed_tweet"
+			],
+			[
 				"Twitter",
 				"TwitterObject"
 			],
@@ -22,10 +66,6 @@
 			[
 				"pos",
 				"posTweet"
-			],
-			[
-				"re",
-				"request"
 			],
 			[
 				"neg",
@@ -54,10 +94,6 @@
 			[
 				"def",
 				"defs\tMethod"
-			],
-			[
-				"twee",
-				"tweets"
 			],
 			[
 				"TW",
@@ -106,10 +142,6 @@
 			[
 				"q",
 				"query_tree"
-			],
-			[
-				"twe",
-				"tweets"
 			],
 			[
 				"t",
@@ -388,10 +420,10 @@
 	"buffers":
 	[
 		{
-			"file": "minor/sentiment/views.py",
+			"file": "minor/sentiment/get_coordinates.py",
 			"settings":
 			{
-				"buffer_size": 1680,
+				"buffer_size": 841,
 				"encoding": "UTF-8",
 				"line_ending": "Unix"
 			}
@@ -400,34 +432,33 @@
 			"file": "minor/sentiment/fetch.py",
 			"settings":
 			{
-				"buffer_size": 3019,
+				"buffer_size": 4594,
 				"encoding": "UTF-8",
 				"line_ending": "Unix"
 			}
 		},
 		{
-			"file": "minor/minor/urls.py",
+			"file": "minor/sentiment/Analysis/dataset/Testing",
 			"settings":
 			{
-				"buffer_size": 877,
-				"line_ending": "Unix"
-			}
-		},
-		{
-			"file": "minor/sentiment/Analysis/code/aiserun.txt",
-			"settings":
-			{
-				"buffer_size": 220,
+				"buffer_size": 0,
 				"encoding": "UTF-8",
 				"line_ending": "Unix"
 			}
 		},
 		{
-			"file": "minor/sentiment/Analysis/code/extractDataset.py",
+			"file": "minor/sentiment/Analysis/dataset/fetched_tweets.txt",
 			"settings":
 			{
-				"buffer_size": 438,
-				"encoding": "UTF-8",
+				"buffer_size": 36752,
+				"line_ending": "Unix"
+			}
+		},
+		{
+			"file": "minor/sentiment/Analysis/dataset/testingDatasetComplete.txt",
+			"settings":
+			{
+				"buffer_size": 38818,
 				"line_ending": "Unix"
 			}
 		}
@@ -508,10 +539,19 @@
 	},
 	"expanded_folders":
 	[
-		"/home/shubhi/Desktop/Minor/Project/minor"
+		"/home/shubhi/Desktop/asliminor/Minor/Project/minor",
+		"/home/shubhi/Desktop/asliminor/Minor/Project/minor/sentiment",
+		"/home/shubhi/Desktop/asliminor/Minor/Project/minor/sentiment/Analysis",
+		"/home/shubhi/Desktop/asliminor/Minor/Project/minor/sentiment/migrations"
 	],
 	"file_history":
 	[
+		"/home/shubhi/Desktop/asliminor/Minor/Project/minor/sentiment/Analysis/dataset/fetched_tweets.txt",
+		"/home/shubhi/Desktop/asliminor/Minor/Project/minor/sentiment/Analysis/dataset/example_tweets.txt",
+		"/home/shubhi/Desktop/asliminor/Minor/Project/minor/sentiment/fetch.py",
+		"/home/shubhi/Desktop/asliminor/Minor/Project/minor/sentiment/Analysis/code/extractDataset.py",
+		"/home/shubhi/Desktop/asliminor/Minor/Project/minor/sentiment/Analysis/code/aiserun.txt",
+		"/home/shubhi/Desktop/asliminor/Minor/Project/minor/sentiment/views.py",
 		"/home/shubhi/Desktop/Minor/Project/minor/minor/settings.py",
 		"/home/shubhi/Desktop/Minor/Project/minor/sentiment/Analysis/code/combine.py",
 		"/home/shubhi/Desktop/Minor/Project/minor/sentiment/Analysis/code/main.py",
@@ -633,13 +673,7 @@
 		"/home/rishabh/Desktop/CN",
 		"/home/rishabh/Desktop/t2.cpp",
 		"/home/rishabh/Desktop/labtest.py",
-		"/home/rishabh/Desktop/Bayesian-Spam-Filter-master/ClassifierDemo.py",
-		"/home/rishabh/Desktop/Bayesian-Spam-Filter-master/SpamClassifier.py",
-		"/home/rishabh/Desktop/Bayesian-Spam-Filter-master/TrainingSetsUtil.py",
-		"/home/rishabh/Downloads/aicodes/dectree.py",
-		"/home/rishabh/Downloads/aicodes/alphabeta.py",
-		"/home/rishabh/Downloads/aicodes/clustering.txt",
-		"/home/rishabh/Desktop/sentiment/sentiment_mod.py"
+		"/home/rishabh/Desktop/Bayesian-Spam-Filter-master/ClassifierDemo.py"
 	],
 	"find":
 	{
@@ -657,6 +691,11 @@
 		"case_sensitive": false,
 		"find_history":
 		[
+			"Antartica",
+			"results",
+			"getLonglat",
+			"output_file",
+			"out",
 			"sys",
 			"sys.argv[1]",
 			"polarityDictionary",
@@ -837,36 +876,37 @@
 	"groups":
 	[
 		{
-			"selected": 2,
+			"selected": 1,
 			"sheets":
 			[
 				{
 					"buffer": 0,
-					"file": "minor/sentiment/views.py",
+					"file": "minor/sentiment/get_coordinates.py",
 					"semi_transient": false,
 					"settings":
 					{
-						"buffer_size": 1680,
+						"buffer_size": 841,
 						"regions":
 						{
 						},
 						"selection":
 						[
 							[
-								587,
-								587
+								788,
+								788
 							]
 						],
 						"settings":
 						{
 							"syntax": "Packages/Python/Python.sublime-syntax",
+							"tab_size": 4,
 							"translate_tabs_to_spaces": false
 						},
 						"translation.x": 0.0,
 						"translation.y": 0.0,
 						"zoom_level": 1.0
 					},
-					"stack_index": 2,
+					"stack_index": 3,
 					"type": "text"
 				},
 				{
@@ -875,75 +915,44 @@
 					"semi_transient": false,
 					"settings":
 					{
-						"buffer_size": 3019,
+						"buffer_size": 4594,
 						"regions":
 						{
 						},
 						"selection":
 						[
 							[
-								248,
-								248
+								3903,
+								3903
 							]
 						],
 						"settings":
 						{
 							"syntax": "Packages/Python/Python.sublime-syntax",
-							"tab_size": 4,
-							"translate_tabs_to_spaces": true
+							"translate_tabs_to_spaces": false
 						},
 						"translation.x": 0.0,
-						"translation.y": 0.0,
-						"zoom_level": 1.0
-					},
-					"stack_index": 1,
-					"type": "text"
-				},
-				{
-					"buffer": 2,
-					"file": "minor/minor/urls.py",
-					"semi_transient": true,
-					"settings":
-					{
-						"buffer_size": 877,
-						"regions":
-						{
-						},
-						"selection":
-						[
-							[
-								726,
-								726
-							]
-						],
-						"settings":
-						{
-							"syntax": "Packages/Python/Python.sublime-syntax",
-							"tab_size": 4,
-							"translate_tabs_to_spaces": true
-						},
-						"translation.x": 0.0,
-						"translation.y": 0.0,
+						"translation.y": 1575.0,
 						"zoom_level": 1.0
 					},
 					"stack_index": 0,
 					"type": "text"
 				},
 				{
-					"buffer": 3,
-					"file": "minor/sentiment/Analysis/code/aiserun.txt",
+					"buffer": 2,
+					"file": "minor/sentiment/Analysis/dataset/Testing",
 					"semi_transient": false,
 					"settings":
 					{
-						"buffer_size": 220,
+						"buffer_size": 0,
 						"regions":
 						{
 						},
 						"selection":
 						[
 							[
-								36,
-								36
+								0,
+								0
 							]
 						],
 						"settings":
@@ -954,30 +963,57 @@
 						"translation.y": 0.0,
 						"zoom_level": 1.0
 					},
-					"stack_index": 3,
+					"stack_index": 2,
 					"type": "text"
 				},
 				{
-					"buffer": 4,
-					"file": "minor/sentiment/Analysis/code/extractDataset.py",
+					"buffer": 3,
+					"file": "minor/sentiment/Analysis/dataset/fetched_tweets.txt",
 					"semi_transient": false,
 					"settings":
 					{
-						"buffer_size": 438,
+						"buffer_size": 36752,
 						"regions":
 						{
 						},
 						"selection":
 						[
 							[
-								368,
-								368
+								141,
+								141
 							]
 						],
 						"settings":
 						{
-							"syntax": "Packages/Python/Python.sublime-syntax",
-							"translate_tabs_to_spaces": false
+							"syntax": "Packages/Text/Plain text.tmLanguage"
+						},
+						"translation.x": 0.0,
+						"translation.y": 0.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 1,
+					"type": "text"
+				},
+				{
+					"buffer": 4,
+					"file": "minor/sentiment/Analysis/dataset/testingDatasetComplete.txt",
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 38818,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								0,
+								0
+							]
+						],
+						"settings":
+						{
+							"syntax": "Packages/Text/Plain text.tmLanguage"
 						},
 						"translation.x": 0.0,
 						"translation.y": 0.0,
