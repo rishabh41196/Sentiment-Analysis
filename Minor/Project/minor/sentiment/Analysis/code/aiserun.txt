@@ -3,5 +3,4 @@ extract.py me call function extract
 os.system("ark-tweet-nlp/runTagger.sh ./dataset/example_tweets.txt > ./dataset/testingTokenised.txt")
 
 combine.py me se call function combine
-
-main.py me se classify() call karna hai
+sentiment.py me se classify() call karna hai

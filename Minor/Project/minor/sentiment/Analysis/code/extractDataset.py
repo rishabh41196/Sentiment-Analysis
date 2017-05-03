@@ -6,7 +6,7 @@ def extract():
 
 	data = []
 	data1 = []
-	f = open(os.path.join(BASE_DIR,"dataset","testingDatasetComplete.txt"),'r')
+	f = open(os.path.join(BASE_DIR,"dataset","Testing.txt"),'r')
 	for line in f:
 		words = line.split('\t')
 		if words[3] != "Not Available\n":
