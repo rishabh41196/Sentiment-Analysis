@@ -17,8 +17,7 @@ def home(request):
 
 def tweetView(request):
 	form=SearchBox(request.session.get('form'))
-	print request.session
-	# searched_date=SearchBox(request.session.get('date'))
+	searched_date=request.session.get('date')
 	lat=[]
 	lon = []
 	final=[]
@@ -28,53 +27,53 @@ def tweetView(request):
 		'lon' : lon,
 		'sentiment' : sentiment,
 	}
-	# print searched_date
+	print searched_date
 
-	# if form.is_valid():
-	# 	subj=request.session.get('form')['searchBox']		
-	# 	if not subj:
-	# 		return render(request,'tweetView.html',context)
+	if form.is_valid():
+		subj=request.session.get('form')['searchBox']		
+		if not subj:
+			return render(request,'tweetView.html',context)
 
-	# 	obj=TwitterObject(subj)
-	# 	tweets = obj.fetchTweets()
+		obj=TwitterObject(subj)
+		tweets = obj.fetchTweets()
 		
-	# 	dbTweets = TweetModel.objects.all().filter(topic = subj, date=str(searched_date))
-	# 	tweetId = []
+		dbTweets = TweetModel.objects.all().filter(topic = subj, date=str(searched_date))
+		tweetId = []
 		
-	# 	for tweet in dbTweets :
-	# 		sentData = {}
+		for tweet in dbTweets :
+			sentData = {}
 
-	# 		lat.append(str(tweet.lat))
-	# 		lon.append(str(tweet.lon))
-	# 		sentiment.append(tweet.sentiment)
-	# 		sentData['lat'] = str(tweet.lat)
-	# 		sentData['lon'] = str(tweet.lon)
-	# 		sentData['sentiment'] = tweet.sentiment
-	# 		final.append(dbTweets)
+			lat.append(str(tweet.lat))
+			lon.append(str(tweet.lon))
+			sentiment.append(tweet.sentiment)
+			sentData['lat'] = str(tweet.lat)
+			sentData['lon'] = str(tweet.lon)
+			sentData['sentiment'] = tweet.sentiment
+			final.append(dbTweets)
 	
-	# 	for tweet in tweets:
-	# 		entity = TweetModel(tweetId = tweet.get('id'), 
-	# 			topic = subj , 
-	# 			text = tweet.get('text') ,
-	# 			date = tweet.get('created_at').now().date(),
-	# 			lat =  tweet.get('lat'),
-	# 			lon = tweet.get('long'),
-	# 			sentiment = tweet.get('sentiment'))
-	# 		if entity.tweetId not in tweetId:
-	# 			lat.append(str(entity.lat))
-	# 			lon.append(str(entity.lon))
-	# 			sentiment.append(entity.sentiment)
-	# 			tweetId.append(entity.tweetId)
-	# 			entity.save()	
+		for tweet in tweets:
+			entity = TweetModel(tweetId = tweet.get('id'), 
+				topic = subj , 
+				text = tweet.get('text') ,
+				date = tweet.get('created_at').now().date(),
+				lat =  tweet.get('lat'),
+				lon = tweet.get('long'),
+				sentiment = tweet.get('sentiment'))
+			if entity.tweetId not in tweetId:
+				lat.append(str(entity.lat))
+				lon.append(str(entity.lon))
+				sentiment.append(entity.sentiment)
+				tweetId.append(entity.tweetId)
+				entity.save()	
 
-	# print lat
-	# print lon
-	# print sentiment
-	# context = {
-	# 	'data' : final,
-	# 	'lat' : lat,
-	# 	'lon' : lon,
-	# 	'sentiment' : sentiment,
-	# }
+	print lat
+	print lon
+	print sentiment
+	context = {
+		'data' : final,
+		'lat' : lat,
+		'lon' : lon,
+		'sentiment' : sentiment,
+	}
 	
 	return render(request,'tweetView.html',context)
