@@ -82,12 +82,18 @@ class TwitterClient(object):
 						break
 
 				if f==0:
+<<<<<<< HEAD
+=======
+					parsed_tweet['location'] = "antarctica"
+>>>>>>> e7a67cd8d019431d9683ff030fca47d840569bf8
 					result_loc={}
-					result_loc=self.geo.getLongLat("Antartica")
-
+					result_loc=self.geo.getLongLat("antarctica")
+				
 				parsed_tweet['lat']=result_loc['lat']
 				parsed_tweet['long']=result_loc['long']
+					
 				
+
 				if tweet.retweet_count > 0:
 					# if tweet has retweets, ensure that it is appended only once
 					if parsed_tweet not in tweets:
@@ -107,7 +113,11 @@ class TwitterObject(object):
 		self.tweets=[]
 
 	def fetchTweets(self):
+<<<<<<< HEAD
 		self.tweets = self.api.get_tweets(self.subj, count = 20)
+=======
+		self.tweets = self.api.get_tweets(self.subj, count = 5)
+>>>>>>> e7a67cd8d019431d9683ff030fca47d840569bf8
 
 		# f=open(os.path.join(BASE_DIR,"sentiment","Analysis","dataset","fetched_tweets.txt"),"w")
 		# for tweet in self.tweets:
@@ -157,5 +167,10 @@ class TwitterObject(object):
 		# self.ptweets = [tweet for tweet in self.tweets if tweet['sentiment'] == 'positive']
 		# self.ntweets = [tweet for tweet in self.tweets if tweet['sentiment'] == 'negative']
 		# self.neutral=[tweet for tweet in self.tweets if tweet['sentiment']=='neutral']
+<<<<<<< HEAD
 # obj=TwitterObject("ipl")
 # obj.fetchTweets()
+=======
+# obj = TwitterObject("ipl")
+# obj.fetchTweets()
+>>>>>>> e7a67cd8d019431d9683ff030fca47d840569bf8
