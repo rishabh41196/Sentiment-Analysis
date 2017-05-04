@@ -92,6 +92,14 @@ def tweetView(request):
 		sentiment = json.dumps(sentiment)
 		lon=json.dumps(lon)
 		lat=json.dumps(lat)
+		for tweet in final:
+			if(tweet['sentiment']=='positive'):
+				pos+=1;
+			elif(tweet['sentiment']=='negative'):
+				neg+=1;
+			else:
+				neut+=1;
+
 
 	context = {
 		'subj' : subj,
