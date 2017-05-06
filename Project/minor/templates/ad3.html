@@ -165,117 +165,85 @@
 		iconAnchor: [15, 48]
 	  }]];
 
-	  var markerClusterer = null;
-	  var map = null;
-	  var imageUrl = 'http://chart.apis.google.com/chart?cht=mm&chs=24x32&' +
-		  'chco=FFFFFF,008CFF,000000&ext=.png';
+      var markerClusterer = null;
+      var map = null;
+      var imageUrl = 'http://chart.apis.google.com/chart?cht=mm&chs=24x32&' +
+          'chco=FFFFFF,008CFF,000000&ext=.png';
 
-	  function refreshMap(map) {
-	  }
 
-	  function initialize() {
-		  map = new google.maps.Map(document.getElementById('map'), {
-			zoom: 2,
-			center: new google.maps.LatLng(39.91, 116.38),
-			mapTypeId: google.maps.MapTypeId.ROADMAP
-		  });
-		  if (markerClusterer) {
-			markerClusterer.clearMarkers();
-		  }
+      function refreshMap() {
+        if (markerClusterer) {
+          markerClusterer.clearMarkers();
+        }
 
-		  var pos="{{pos|safe}}";
-		  var neg="{{neg|safe}}";
-		  var neut = "{{neut|safe}}";
+        var markers = [];
 
-		  pos = JSON.parse(pos);
-		  neg = JSON.parse(neg);
-		  neut =JSON.parse(neut);
+        var markerImage = new google.maps.MarkerImage(imageUrl,
+          new google.maps.Size(24, 32));
 
-		  var sentiment = document.getElementById('sentiment');
 
-		  var markerbox = '<center><div>Positive:</div>'+pos+'<div> negative:</div>'+neg+'<div> neutral:</div>'+neut+'</center>';     
-
-		  var infowindow = new google.maps.InfoWindow({
-			content: markerbox
-			});
-
-		  var markers = [];
-
-		  var markerImage = new google.maps.MarkerImage(imageUrl,
-			new google.maps.Size(24, 32));
-
+ 		var sentiment = parseInt(document.getElementById('sentiment').value, 10);
+		  var sen="{{sentiment|safe}}";
 		  var lon="{{lon|safe}}";
 		  var lat="{{lat|safe}}";
 		  var len = "{{len}}";
-
+		  sen = JSON.parse(sen);
 		  lon = JSON.parse(lon);
 		  lat = JSON.parse(lat);
 		  
-		  for(i=0;i<len;i++) {
+		  for(i=0;i<len;i++){
+		  	if(sen[i]!=sentiment)
+		  		continue;
 			var latLng = new google.maps.LatLng(lat[i],
 				lon[i]);
-					
+		 var marker = new google.maps.Marker({
+            position: latLng,
+            draggable: true,
+            icon: markerImage
+          });
+          markers.push(marker);
+        }
 
-			var marker = new google.maps.Marker({
-			  position: latLng,
-			  draggable: true,
-			  map: map,
-			  icon: markerImage
-			});
+        var zoom = parseInt(document.getElementById('zoom').value, 10);
+        var size = parseInt(document.getElementById('size').value, 10);
+        var style = parseInt(document.getElementById('style').value, 10);
+        zoom = zoom === -1 ? null : zoom;
+        size = size === -1 ? null : size;
+        style = style === -1 ? null: style;
 
-			marker.addListener('mouseover', function() {
-			  infowindow.open(map, marker);
-			});
-		   
-			marker.addListener('mouseout', function() {
-			  infowindow.close();
-			});			
-		   markers.push(marker);
-		  }
+        markerClusterer = new MarkerClusterer(map, markers, {
+          maxZoom: zoom,
+          gridSize: size,
+          styles: styles[style],
+          imagePath: "{% static 'img/m' %}"
+        });
+      }
 
-		   
-		  var zoom = parseInt(document.getElementById('zoom').value, 10);
-		  var size = parseInt(document.getElementById('size').value, 10);
-		  var style = parseInt(document.getElementById('style').value, 10);
-		  zoom = zoom === -1 ? null : zoom;
-		  size = size === -1 ? null : size;
-		  style = style === -1 ? null: style;
+      function initialize() {
+        map = new google.maps.Map(document.getElementById('map'), {
+          zoom: 2,
+          center: new google.maps.LatLng(39.91, 116.38),
+          mapTypeId: google.maps.MapTypeId.ROADMAP
+        });
 
-		  markerClusterer = new MarkerClusterer(map, markers, {
-			maxZoom: zoom,
-			gridSize: size,
-			styles: styles[style],
-			imagePath:"{% static 'img/m' %}"
-			//imagePath: '../images/m'
-		  });
-		//.maps.event.addListener(markerClusterer, "mouseover", function (c) {
-		//	infowindow.open(map, markerClusterer);
-          
-        //});
-        //google.maps.event.addListener(markerClusterer, "mouseout", function (c) {
-         //infowindow.close();
-        //});
-       
-		google.maps.event.addListener(markerClusterer, 'clusterclick',function(cluster) {
-   		infowindow.open(map, markerClusterer);
-	});
-			
+        var refresh = document.getElementById('refresh');
+        google.maps.event.addDomListener(refresh, 'click', refreshMap);
 
+        var clear = document.getElementById('clear');
+        google.maps.event.addDomListener(clear, 'click', clearClusters);
 
+        refreshMap();
+      }
 
+      function clearClusters(e) {
+        e.preventDefault();
+        e.stopPropagation();
+        markerClusterer.clearMarkers();
+      }
 
-	  }
-
-	  function clearClusters(e) {
-		e.preventDefault();
-		e.stopPropagation();
-		markerClusterer.clearMarkers();
-	  }
-
-	  google.maps.event.addDomListener(window, 'load', initialize);
-	</script>
+      google.maps.event.addDomListener(window, 'load', initialize);
+    </script>
   </head>
-
 
 
 
@@ -320,9 +288,9 @@
 	   </select>
 	   <span class="sentiment"> Sentiment :
 	   	<select id="sentiment">
-	   		<option value="positive">Positive</option>
-	   		<option value="negative">Negative</option>
-	   		<option value="neutral">Neutral</option>
+	   		<option value="1">Positive</option>
+	   		<option value="-1">Negative</option>
+	   		<option value="0">Neutral</option>
 	   	</select>
 	   <input id="refresh" type="button" value="Refresh Map" class="item"/>
 	  <style type="text/css">
